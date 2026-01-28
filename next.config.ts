@@ -1,14 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: 'export',
   reactStrictMode: true,
   images: {
     domains: ['firebasestorage.googleapis.com'],
     unoptimized: true,
-  },
-  // Suppress the multiple lockfiles warning if needed
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
