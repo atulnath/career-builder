@@ -156,11 +156,6 @@ const LoginView = () => {
                         </button>
                     </div>
                 </div>
-
-                <div className="mt-8 flex items-center justify-center gap-2 text-slate-500 text-xs font-medium">
-                    <Sparkles size={12} className="text-purple-400" />
-                    <span>Protected by Antigravity Secure Auth</span>
-                </div>
             </div>
         </div>
     );
