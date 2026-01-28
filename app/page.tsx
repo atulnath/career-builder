@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
   Download,
@@ -11,8 +11,13 @@ import {
   Save,
   Menu,
   X,
+  LogOut,
   Settings
 } from 'lucide-react';
+
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import LoginView from '@/components/Auth/LoginView';
 
 import CVForm from '@/components/CVForm';
 import CVPreview from '@/components/CVPreview';
@@ -139,9 +144,20 @@ const INITIAL_DATA: CVData = {
 };
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // Restore session
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
-
 
   const {
     cvData,
@@ -152,9 +168,7 @@ export default function Home() {
     addProfile,
     removeProfile,
     updateProfileName
-  } = useCVData(INITIAL_DATA);
-
-
+  } = useCVData(INITIAL_DATA, user?.uid || null);
 
   const [currentView, setCurrentView] = useState<ViewType>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -163,6 +177,26 @@ export default function Home() {
   const handleDownloadPDF = async () => {
     await generatePDF(cvData);
   };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#020617] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <LoginView />;
+  }
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-200 selection:bg-blue-500/30 font-sans flex overflow-hidden">
@@ -193,7 +227,7 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:block">Real-time Connected</p>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:block">Logged in as {user.email?.split('@')[0]}</p>
               </div>
               <div className="w-px h-3 bg-slate-800 hidden sm:block"></div>
               <div className="flex items-center gap-2">
@@ -271,6 +305,16 @@ export default function Home() {
                   </button>
                 </>
               )}
+
+              <div className="w-px h-6 bg-slate-800 hidden md:block"></div>
+
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 bg-slate-800/50 hover:bg-red-500/10 text-slate-400 hover:text-red-400 px-3 py-2.5 rounded-xl font-bold text-xs transition-all border border-slate-700/50"
+                title="Logout"
+              >
+                <LogOut size={16} />
+              </button>
 
             </div>
 

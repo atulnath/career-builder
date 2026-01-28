@@ -6,22 +6,24 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { CVData, CVProfile } from '@/lib/types';
 
-export const useCVData = (initialData: CVData) => {
+export const useCVData = (initialData: CVData, userId: string | null) => {
     const [cvData, setCVData] = useState<CVData>(initialData);
     const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
     // Load CV data from Firebase when language changes
     useEffect(() => {
         const loadCVData = async () => {
+            if (!userId) return;
+
             try {
                 console.log(`[Firebase] Attempting to load data for language: ${cvData.language}`);
-                const docId = `cv-data-${cvData.language}`;
-                const docRef = doc(db, 'cvs', docId);
+                // Path: users/{userId}/cvs/{language}
+                const docRef = doc(db, 'users', userId, 'cvs', cvData.language);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
                     const data = docSnap.data() as CVData;
-                    console.log(`[Firebase] Data loaded successfully for: ${docId}`);
+                    console.log(`[Firebase] Data loaded successfully for: ${cvData.language}`);
 
                     setCVData(prev => {
                         const merged = {
@@ -48,7 +50,7 @@ export const useCVData = (initialData: CVData) => {
                     });
 
                 } else {
-                    console.warn(`[Firebase] No document found for: ${docId}. Keeping current state but switching language.`);
+                    console.warn(`[Firebase] No document found for: ${cvData.language}. Keeping current state but switching language.`);
                     setCVData(prev => ({ ...prev, language: prev.language })); // Force trigger state consistency if needed
                 }
             } catch (error) {
@@ -57,7 +59,7 @@ export const useCVData = (initialData: CVData) => {
 
         };
         loadCVData();
-    }, [cvData.language]);
+    }, [cvData.language, userId]);
 
     // Sync active profile data when aboutMe or skills change
     useEffect(() => {
@@ -83,16 +85,20 @@ export const useCVData = (initialData: CVData) => {
     }, [cvData.aboutMe, cvData.skills]);
 
     const saveToCloud = async () => {
+        if (!userId) {
+            console.error("Cannot save: No user ID provided");
+            return;
+        }
+
         console.log(`[Firebase] Starting save to cloud for language: ${cvData.language}`);
         setSaveStatus('saving');
         try {
-            const docId = `cv-data-${cvData.language}`;
-            const docRef = doc(db, 'cvs', docId);
+            const docRef = doc(db, 'users', userId, 'cvs', cvData.language);
             await setDoc(docRef, {
                 ...cvData,
                 updatedAt: new Date().toISOString()
             });
-            console.log(`[Firebase] Save successful for: ${docId}`);
+            console.log(`[Firebase] Save successful for: ${cvData.language}`);
             setSaveStatus('saved');
             setTimeout(() => setSaveStatus('idle'), 3000);
         } catch (error) {
