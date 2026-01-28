@@ -2,7 +2,7 @@
 
 **CV Builder Pro** is a high-performance, modern web application designed for professionals to create, preview, and export high-quality, industry-standard CVs. Built with **Next.js**, **TypeScript**, and **Tailwind CSS**, it offers a seamless real-time experience with precise PDF generation.
 
-![CV Builder Pro Preview](./cv_builder_pro_preview.png)
+[CV Builder Pro Preview](https://atulnath.github.io/career-builder/)
 
 ## 🚀 Features
 
