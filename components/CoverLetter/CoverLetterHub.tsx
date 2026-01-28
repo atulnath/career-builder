@@ -15,10 +15,10 @@ import {
     X,
     Calendar,
     User,
-    Sparkles,
-    Loader2,
-    Globe,
-    Target
+    // Sparkles, // Removed
+    // Loader2, // Removed
+    // Globe, // Removed
+    // Target // Removed
 } from 'lucide-react';
 
 import { CVData, CoverLetter } from '@/lib/types';
@@ -26,7 +26,7 @@ import LetterPreview from './LetterPreview';
 import { generateLetterPDF } from '@/lib/letterGenerator';
 import { generateLetter_DOCX } from '@/lib/docxGenerator';
 import { LABELS } from '@/lib/constants';
-import { generateCoverLetterAI, AIInput } from '@/lib/ai/generator';
+// import { generateCoverLetterAI, AIInput } from '@/lib/ai/generator'; // Removed
 
 
 
@@ -39,19 +39,8 @@ interface CoverLetterHubProps {
 const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) => {
     const [activeLetterId, setActiveLetterId] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [isAIModalOpen, setIsAIModalOpen] = useState(false);
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [aiInputs, setAIInputs] = useState<AIInput>({
-        jobDescription: '',
-        targetRole: '',
-        companyName: '',
-        seniorityLevel: 'Intermediate',
-        targetCountry: 'Germany',
-        tone: 'Semi-formal',
-        language: cvData.language === 'de' ? 'German' : 'English',
-        keywordsToEmphasize: '',
-        gapContext: ''
-    });
+    // AI State removed
+
 
     const lang = cvData.language || 'en';
     const labels = LABELS[lang];
@@ -59,34 +48,8 @@ const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) =>
 
     const activeLetter = cvData.coverLetters?.find(l => l.id === activeLetterId);
 
-    const handleAIGenerate = async () => {
-        if (!aiInputs.jobDescription || !aiInputs.targetRole) return;
+    // handleAIGenerate removed
 
-        setIsGenerating(true);
-        try {
-            const content = await generateCoverLetterAI(cvData, aiInputs);
-            const newLetter: CoverLetter = {
-                id: `cl-ai-${Date.now()}`,
-                title: aiInputs.targetRole,
-                company: aiInputs.companyName || aiInputs.jobDescription.split('\n')[0].substring(0, 30) || 'AI Generated',
-                content: content,
-                lastModified: new Date().toISOString().split('T')[0],
-                salutation: aiInputs.language === 'German' ? 'Sehr geehrte Damen und Herren,' : 'Dear Hiring Manager,',
-                closing: aiInputs.language === 'German' ? 'Mit freundlichen Grüßen' : 'Best regards'
-            };
-
-            setCVData((prev: CVData) => ({
-                ...prev,
-                coverLetters: [newLetter, ...(prev.coverLetters || [])]
-            }));
-            setActiveLetterId(newLetter.id);
-            setIsAIModalOpen(false);
-        } catch (error) {
-            console.error('AI Generation failed:', error);
-        } finally {
-            setIsGenerating(false);
-        }
-    };
 
     const addLetter = () => {
         const newLetter: CoverLetter = {
@@ -134,13 +97,7 @@ const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) =>
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <button
-                        onClick={() => setIsAIModalOpen(true)}
-                        className="flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-8 py-4 rounded-2xl font-black text-sm transition-all shadow-xl shadow-blue-500/20 group"
-                    >
-                        <Sparkles size={18} className="group-hover:animate-pulse" />
-                        AI SMART GENERATE
-                    </button>
+                    {/* AI Button Removed */}
                     <button
                         onClick={addLetter}
                         className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 px-8 py-4 rounded-2xl font-black text-sm transition-all border border-slate-700/50"
@@ -408,160 +365,8 @@ const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) =>
                     </div>
                 </div>
             </div>
-            {/* AI Generation Modal */}
-            {isAIModalOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-xl animate-in fade-in duration-300">
-                    <div className="bg-slate-900 border border-slate-700/50 rounded-[40px] w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                        <div className="p-8 border-b border-slate-800 flex items-center justify-between shrink-0">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
-                                    <Sparkles className="text-blue-400" size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-black text-white">AI Career Assistant</h3>
-                                    <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Professional Writer • {aiInputs.language}</p>
-                                </div>
-                            </div>
-                            <button onClick={() => setIsAIModalOpen(false)} className="text-slate-500 hover:text-white transition-colors">
-                                <X size={24} />
-                            </button>
-                        </div>
+            {/* AI Generation Modal - REMOVED */}
 
-                        <div className="p-8 overflow-y-auto custom-scrollbar space-y-8">
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1 flex items-center gap-2">
-                                        <Target size={12} className="text-blue-400" /> Target Role
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="e.g. Senior Frontend Developer"
-                                        value={aiInputs.targetRole}
-                                        onChange={(e) => setAIInputs(prev => ({ ...prev, targetRole: e.target.value }))}
-                                        className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-bold"
-                                    />
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1">Company Name</label>
-                                    <div className="relative">
-                                        <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={14} />
-                                        <input
-                                            type="text"
-                                            placeholder="e.g. BMW Group"
-                                            value={aiInputs.companyName || ''}
-                                            onChange={(e) => setAIInputs(prev => ({ ...prev, companyName: e.target.value }))}
-                                            className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 pl-10 pr-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-bold"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1">Seniority Level</label>
-                                    <select
-                                        value={aiInputs.seniorityLevel}
-                                        onChange={(e) => setAIInputs(prev => ({ ...prev, seniorityLevel: e.target.value }))}
-                                        className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-bold appearance-none"
-                                    >
-                                        <option value="Junior">Junior / Entry</option>
-                                        <option value="Intermediate">Intermediate / Specialist</option>
-                                        <option value="Senior">Senior / Expert</option>
-                                        <option value="Manager">Management / Lead</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1 flex items-center gap-2">
-                                        <Globe size={12} className="text-blue-400" /> Target Country
-                                    </label>
-                                    <select
-                                        value={aiInputs.targetCountry}
-                                        onChange={(e) => setAIInputs(prev => ({ ...prev, targetCountry: e.target.value }))}
-                                        className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-bold appearance-none"
-                                    >
-                                        <option value="Germany">Germany (DIN 5008)</option>
-                                        <option value="USA/Canada">USA/Canada (Impact-focused)</option>
-                                        <option value="UK/EU">UK/EU (Understatement)</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1 flex items-center gap-2">
-                                    <FileText size={12} className="text-blue-400" /> Job Description
-                                </label>
-                                <textarea
-                                    placeholder="Paste the job requirements here..."
-                                    value={aiInputs.jobDescription}
-                                    onChange={(e) => setAIInputs(prev => ({ ...prev, jobDescription: e.target.value }))}
-                                    className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-medium h-32 resize-none custom-scrollbar"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-6">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1">Skills to Emphasize</label>
-                                    <input
-                                        type="text"
-                                        placeholder="e.g. React, Python..."
-                                        value={aiInputs.keywordsToEmphasize || ''}
-                                        onChange={(e) => setAIInputs(prev => ({ ...prev, keywordsToEmphasize: e.target.value }))}
-                                        className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-bold"
-                                    />
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1">Tone of Voice</label>
-                                    <select
-                                        value={aiInputs.tone}
-                                        onChange={(e) => setAIInputs(prev => ({ ...prev, tone: e.target.value as any }))}
-                                        className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-bold appearance-none"
-                                    >
-                                        <option value="Formal">Formal</option>
-                                        <option value="Semi-formal">Semi-formal</option>
-                                        <option value="Technical">Technical</option>
-                                        <option value="Enthusiastic">Enthusiastic</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1 flex items-center gap-2">
-                                    Motivation / Career Context (Optional)
-                                </label>
-                                <textarea
-                                    placeholder="Explain career gaps, change of industry, or specific motivation..."
-                                    value={aiInputs.gapContext}
-                                    onChange={(e) => setAIInputs(prev => ({ ...prev, gapContext: e.target.value }))}
-                                    className="w-full bg-slate-800/40 border border-slate-700/50 rounded-2xl py-4 px-6 text-white text-sm focus:outline-none focus:border-blue-500 transition-all font-medium h-24 resize-none custom-scrollbar"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="p-8 bg-slate-900/50 border-t border-slate-800 shrink-0">
-                            <button
-                                onClick={handleAIGenerate}
-                                disabled={isGenerating || !aiInputs.jobDescription || !aiInputs.targetRole}
-                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white py-5 rounded-2xl font-black text-sm transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-3"
-                            >
-                                {isGenerating ? (
-                                    <>
-                                        <Loader2 className="animate-spin" size={20} />
-                                        ATS OPTIMIZING...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Sparkles size={20} />
-                                        GENERATE PROFESSIONAL LETTER
-                                    </>
-                                )}
-                            </button>
-                            <p className="text-center text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-4">
-                                AI will use existing CV data to ensure 100% factual accuracy
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
