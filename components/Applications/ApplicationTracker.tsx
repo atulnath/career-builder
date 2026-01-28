@@ -242,6 +242,8 @@ const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ cvData, setCVDa
                                     type="text"
                                     value={newApp.company}
                                     onChange={(e) => setNewApp({ ...newApp, company: e.target.value })}
+                                    spellCheck={false}
+                                    lang={cvData.language || 'en'}
                                     className="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl py-3.5 px-4 text-white focus:outline-none focus:border-blue-500/50 transition-all font-medium"
                                     placeholder="e.g. Tesla, Google"
                                 />
@@ -252,6 +254,8 @@ const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ cvData, setCVDa
                                     type="text"
                                     value={newApp.role}
                                     onChange={(e) => setNewApp({ ...newApp, role: e.target.value })}
+                                    spellCheck={false}
+                                    lang={cvData.language || 'en'}
                                     className="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl py-3.5 px-4 text-white focus:outline-none focus:border-blue-500/50 transition-all font-medium"
                                     placeholder="e.g. CV Engineer"
                                 />
@@ -262,6 +266,8 @@ const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ cvData, setCVDa
                                     type="text"
                                     value={newApp.location}
                                     onChange={(e) => setNewApp({ ...newApp, location: e.target.value })}
+                                    spellCheck={false}
+                                    lang={cvData.language || 'en'}
                                     className="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl py-3.5 px-4 text-white focus:outline-none focus:border-blue-500/50 transition-all font-medium"
                                     placeholder="e.g. Berlin, Remote"
                                 />
@@ -290,6 +296,8 @@ const ApplicationTracker: React.FC<ApplicationTrackerProps> = ({ cvData, setCVDa
                                 <textarea
                                     value={newApp.notes}
                                     rows={3}
+                                    spellCheck={false}
+                                    lang={cvData.language || 'en'}
                                     onChange={(e) => setNewApp({ ...newApp, notes: e.target.value })}
                                     className="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl py-3.5 px-4 text-white focus:outline-none focus:border-blue-500/50 transition-all font-medium resize-none"
                                     placeholder="Brief thoughts about the role or referral info..."

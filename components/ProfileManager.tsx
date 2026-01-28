@@ -63,6 +63,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({
                                 <input
                                     type="text"
                                     defaultValue={profile.name}
+                                    spellCheck={false}
                                     onBlur={(e) => updateProfileName(profile.id, e.target.value)}
                                     onKeyDown={(e) => e.key === 'Enter' && (e.target as HTMLInputElement).blur()}
                                     className="bg-slate-950/50 border border-slate-700/50 rounded-xl px-3 py-1.5 text-[10px] font-bold text-white focus:outline-none focus:ring-1 focus:ring-blue-500/50 w-36 transition-all"

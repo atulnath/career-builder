@@ -64,10 +64,10 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ cvData, se
                             <button onClick={() => removeExperience(expIdx)} className="p-2.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all duration-300"><Trash2 size={18} /></button>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input type="text" placeholder={labels.placeholders.company} value={exp.company} onChange={(e) => updateExperience(expIdx, 'company', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
+                            <input type="text" placeholder={labels.placeholders.company} value={exp.company} onChange={(e) => updateExperience(expIdx, 'company', e.target.value)} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                             <input type="text" placeholder={labels.placeholders.dates} value={exp.dates} onChange={(e) => updateExperience(expIdx, 'dates', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                         </div>
-                        <input type="text" placeholder={labels.placeholders.position} value={exp.position} onChange={(e) => updateExperience(expIdx, 'position', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
+                        <input type="text" placeholder={labels.placeholders.position} value={exp.position} onChange={(e) => updateExperience(expIdx, 'position', e.target.value)} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 px-1">
                                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
@@ -84,6 +84,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ cvData, se
                                             updateExperience(expIdx, 'bullets', updatedBullets);
                                         }}
                                         className="w-full px-5 py-4 bg-slate-800/20 border border-slate-700/30 rounded-2xl text-sm text-white focus:outline-none focus:border-blue-500/50 transition-all min-h-[80px]"
+                                        spellCheck={false}
                                     />
                                     <button onClick={() => removeBullet(expIdx, bIdx)} className="p-3 self-center text-slate-600 hover:text-red-400 opacity-0 group-hover/bullet:opacity-100 transition-all"><Trash2 size={16} /></button>
                                 </div>

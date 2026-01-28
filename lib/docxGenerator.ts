@@ -2,83 +2,144 @@ import { CVData } from './types';
 
 export const generateCV_DOCX = (cvData: CVData) => {
     const isGerman = cvData.language === 'de';
+    const labels = {
+        personal: isGerman ? 'Persönliche Daten' : 'Contact',
+        about: isGerman ? 'Über mich' : 'Professional Summary',
+        experience: isGerman ? 'Berufserfahrung' : 'Experience',
+        education: isGerman ? 'Ausbildung' : 'Education',
+        skills: isGerman ? 'Kenntnisse' : 'Skills',
+        languages: isGerman ? 'Sprachen' : 'Languages',
+        address: isGerman ? 'Adresse' : 'Address',
+        location: isGerman ? 'Standort' : 'Location',
+        phone: isGerman ? 'Telefon' : 'Phone',
+        email: 'E-Mail',
+        dob: isGerman ? 'Geburtsdatum' : 'Date of Birth',
+        subtitle: isGerman ? 'Maschinelles Lernen | Computer Vision' : 'Machine Learning | Computer Vision'
+    };
+
     const content = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head><meta charset='utf-8'><title>CV - ${cvData.fullName}</title>
         <style>
-            @page { margin: 1in; }
-            body { font-family: 'Calibri', 'Arial', sans-serif; line-height: 1.4; color: #1a1a1a; font-size: 11pt; }
-            .header { text-align: center; border-bottom: 2pt solid #2563eb; padding-bottom: 10pt; margin-bottom: 20pt; }
-            .name { font-size: 24pt; font-weight: bold; color: #1e40af; margin-bottom: 5pt; text-transform: uppercase; letter-spacing: 1pt; }
-            .contact { font-size: 10pt; color: #4b5563; }
+            @page { size: A4; margin: 0; }
+            body { font-family: 'Segoe UI', 'Arial', sans-serif; line-height: 1.3; color: #1a1a1a; font-size: 9pt; margin: 0; padding: 0; }
             
-            .section-header { border-bottom: 1pt solid #e5e7eb; margin-top: 15pt; margin-bottom: 8pt; padding-top: 5pt; }
-            .section-title { font-size: 14pt; font-weight: bold; color: #1e40af; text-transform: uppercase; letter-spacing: 0.5pt; }
+            /* Header - Dark Blue - Compact */
+            .header { background-color: #2c3e50; color: white; padding: 15pt 20pt; border-bottom: 4pt solid #34495e; }
+            .name { font-size: 22pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1pt; margin-bottom: 2pt; }
+            .subtitle { font-size: 8pt; color: #94a3b8; text-transform: uppercase; letter-spacing: 2pt; font-weight: bold; }
             
-            .item-table { width: 100%; border-collapse: collapse; margin-bottom: 8pt; }
-            .item-title { font-weight: bold; font-size: 11pt; color: #111827; }
-            .item-meta { font-style: italic; color: #4b5563; font-size: 10pt; text-align: right; }
-            .item-company { font-weight: bold; color: #374151; font-size: 10.5pt; }
+            /* Two Column Layout */
+            .main-layout { width: 100%; border-collapse: collapse; }
+            .sidebar { width: 32%; background-color: #f8fafc; padding: 12pt; vertical-align: top; border-right: 1pt solid #e2e8f0; }
+            .main-content { width: 68%; padding: 12pt 15pt; vertical-align: top; background-color: white; }
             
-            .bullet { margin-left: 20pt; color: #4b5563; font-size: 10.5pt; margin-bottom: 2pt; }
-            .skill-table { width: 100%; border-collapse: collapse; }
-            .skill-cat { font-weight: bold; width: 30%; vertical-align: top; padding-top: 4pt; }
-            .skill-items { width: 70%; vertical-align: top; padding-top: 4pt; color: #374151; }
+            /* Section Headers */
+            .section-title { font-size: 8pt; font-weight: bold; color: #2c3e50; text-transform: uppercase; letter-spacing: 1pt; border-bottom: 1.5pt solid #2c3e50; padding-bottom: 2pt; margin-bottom: 6pt; margin-top: 8pt; display: inline-block; }
+            .section-title-main { font-size: 9pt; font-weight: bold; color: #2c3e50; text-transform: uppercase; letter-spacing: 1.5pt; margin-bottom: 8pt; margin-top: 10pt; }
+            .section-bar { display: inline-block; width: 18pt; height: 1.5pt; background-color: #2c3e50; margin-right: 6pt; vertical-align: middle; }
+            
+            /* Personal Info in Sidebar - Compact */
+            .info-label { font-size: 7pt; font-weight: bold; color: #1e293b; margin-bottom: 1pt; text-transform: uppercase; letter-spacing: 0.3pt; }
+            .info-value { font-size: 8pt; color: #475569; margin-bottom: 5pt; padding-left: 0pt; }
+            
+            /* Skills - Compact */
+            .skill-category { font-size: 7pt; font-weight: bold; color: #1e293b; text-transform: uppercase; letter-spacing: 0.3pt; margin-top: 4pt; }
+            .skill-items { font-size: 8pt; color: #475569; line-height: 1.3; margin-top: 1pt; }
+            
+            /* Languages - Compact */
+            .language-row { margin: 3pt 0; }
+            .language-name { font-size: 8pt; font-weight: bold; color: #1e293b; }
+            .language-level { font-size: 6pt; font-weight: bold; color: #2563eb; background-color: #dbeafe; padding: 1pt 4pt; text-transform: uppercase; letter-spacing: 0.3pt; }
+            
+            /* Experience Timeline - Compact */
+            .exp-item { margin-bottom: 10pt; padding-left: 10pt; border-left: 1.5pt solid #e2e8f0; }
+            .exp-company { font-size: 10pt; font-weight: bold; color: #1e293b; margin-bottom: 1pt; }
+            .exp-dates { font-size: 7pt; font-weight: bold; color: #94a3b8; background-color: #f8fafc; padding: 2pt 5pt; text-transform: uppercase; letter-spacing: 0.3pt; float: right; }
+            .exp-position { font-size: 8pt; font-weight: bold; color: #2563eb; text-transform: uppercase; letter-spacing: 0.3pt; margin-bottom: 4pt; }
+            .exp-bullet { font-size: 8pt; color: #475569; margin: 2pt 0; padding-left: 6pt; line-height: 1.3; }
+            .exp-bullet-icon { color: #2563eb; font-weight: bold; margin-right: 3pt; }
+            
+            /* Education Cards - Compact */
+            .edu-card { background-color: #f8fafc; padding: 8pt; margin-bottom: 6pt; border-left: 2pt solid #2563eb; }
+            .edu-university { font-size: 9pt; font-weight: bold; color: #1e293b; text-transform: uppercase; letter-spacing: 0.3pt; }
+            .edu-degree { font-size: 8pt; font-weight: bold; color: #374151; margin-top: 1pt; }
+            .edu-dates { font-size: 7pt; font-weight: bold; color: #94a3b8; float: right; }
+            .edu-gpa { font-size: 7pt; font-weight: bold; color: #2563eb; background-color: #dbeafe; padding: 1pt 4pt; margin-left: 5pt; }
+            .edu-field { font-size: 8pt; color: #64748b; margin-top: 2pt; }
+            
+            /* About Section - Compact */
+            .about-text { font-size: 8pt; color: #475569; line-height: 1.4; text-align: justify; font-style: italic; border-left: 1.5pt solid #e2e8f0; padding-left: 8pt; }
         </style>
         </head>
         <body>
+            <!-- Header -->
             <div class='header'>
                 <div class='name'>${cvData.fullName}</div>
-                <div class='contact'>
-                    ${cvData.location} | ${cvData.phone} | ${cvData.email}<br/>
-                    ${cvData.address}
-                </div>
+                <div class='subtitle'>${labels.subtitle}</div>
             </div>
 
-            ${cvData.aboutMe ? `
-                <div class='section-header'><span class='section-title'>${isGerman ? 'Über mich' : 'Professional Summary'}</span></div>
-                <p style='color: #374151; text-align: justify;'>${cvData.aboutMe}</p>
-            ` : ''}
+            <!-- Two Column Layout -->
+            <table class='main-layout'>
+                <tr>
+                    <!-- Sidebar -->
+                    <td class='sidebar'>
+                        <div class='section-title'>${labels.personal}</div>
+                        ${cvData.address ? `<div class='info-label'>${labels.address}</div><div class='info-value'>${cvData.address}</div>` : ''}
+                        ${cvData.location ? `<div class='info-label'>${labels.location}</div><div class='info-value'>${cvData.location}</div>` : ''}
+                        ${cvData.phone ? `<div class='info-label'>${labels.phone}</div><div class='info-value'>${cvData.phone}</div>` : ''}
+                        ${cvData.email ? `<div class='info-label'>${labels.email}</div><div class='info-value'>${cvData.email}</div>` : ''}
+                        ${cvData.dateOfBirth ? `<div class='info-label'>${labels.dob}</div><div class='info-value'>${cvData.dateOfBirth}</div>` : ''}
+                        ${cvData.github ? `<div class='info-label'>GitHub</div><div class='info-value'>${cvData.github}</div>` : ''}
+                        ${cvData.leetcode ? `<div class='info-label'>LeetCode</div><div class='info-value'>${cvData.leetcode}</div>` : ''}
+                        ${cvData.portfolio ? `<div class='info-label'>Portfolio</div><div class='info-value'>${cvData.portfolio}</div>` : ''}
 
-            <div class='section-header'><span class='section-title'>${isGerman ? 'Berufserfahrung' : 'Experience'}</span></div>
-            ${(cvData.experience || []).map(exp => `
-                <table class='item-table'>
-                    <tr>
-                        <td class='item-title'>${exp.position}</td>
-                        <td class='item-meta'>${exp.dates}</td>
-                    </tr>
-                    <tr>
-                        <td colspan='2' class='item-company'>${exp.company}</td>
-                    </tr>
-                </table>
-                <div style='margin-left: 5pt;'>
-                    ${(exp.bullets || []).map(b => `<div class='bullet'>• ${b}</div>`).join('')}
-                </div>
-                <div style='height: 8pt;'></div>
-            `).join('')}
+                        <div class='section-title'>${labels.skills}</div>
+                        ${(cvData.skills || []).map(skill => `
+                            <div class='skill-category'>${skill.category}</div>
+                            <div class='skill-items'>${skill.items}</div>
+                        `).join('')}
 
-            <div class='section-header'><span class='section-title'>${isGerman ? 'Ausbildung' : 'Education'}</span></div>
-            ${(cvData.education || []).map(edu => `
-                <table class='item-table'>
-                    <tr>
-                        <td class='item-title'>${edu.degree}</td>
-                        <td class='item-meta'>${edu.dates}</td>
-                    </tr>
-                    <tr>
-                        <td colspan='2' class='item-company'>${edu.university} ${edu.gpa ? ` | GPA: ${edu.gpa}` : ''}</td>
-                    </tr>
-                </table>
-                <div style='height: 5pt;'></div>
-            `).join('')}
+                        <div class='section-title'>${labels.languages}</div>
+                        ${(cvData.languages || []).map(langItem => `
+                            <div class='language-row'>
+                                <span class='language-name'>● ${langItem.name}</span>
+                                <span class='language-level'>${langItem.level}</span>
+                            </div>
+                        `).join('')}
+                    </td>
 
-            <div class='section-header'><span class='section-title'>${isGerman ? 'Kenntnisse' : 'Skills'}</span></div>
-            <table class='skill-table'>
-                ${(cvData.skills || []).map(skill => `
-                    <tr>
-                        <td class='skill-cat'>${skill.category}</td>
-                        <td class='skill-items'>${skill.items}</td>
-                    </tr>
-                `).join('')}
+                    <!-- Main Content -->
+                    <td class='main-content'>
+                        ${cvData.aboutMe ? `
+                            <div class='section-title-main'><span class='section-bar'></span>${labels.about}</div>
+                            <div class='about-text'>"${cvData.aboutMe}"</div>
+                        ` : ''}
+
+                        <div class='section-title-main'><span class='section-bar'></span>${labels.experience}</div>
+                        ${(cvData.experience || []).map(exp => `
+                            <div class='exp-item'>
+                                <span class='exp-dates'>${exp.dates}</span>
+                                <div class='exp-company'>${exp.company}</div>
+                                <div class='exp-position'>${exp.position}</div>
+                                ${(exp.bullets || []).filter(b => b.trim()).map(bullet => `
+                                    <div class='exp-bullet'><span class='exp-bullet-icon'>›</span>${bullet}</div>
+                                `).join('')}
+                            </div>
+                        `).join('')}
+
+                        <div class='section-title-main'><span class='section-bar'></span>${labels.education}</div>
+                        ${(cvData.education || []).map(edu => `
+                            <div class='edu-card'>
+                                <span class='edu-dates'>${edu.dates}</span>
+                                ${edu.gpa ? `<span class='edu-gpa'>GPA: ${edu.gpa}</span>` : ''}
+                                <div class='edu-university'>${edu.university}</div>
+                                <div class='edu-degree'>${edu.degree}</div>
+                                ${edu.field ? `<div class='edu-field'>Specialization: ${edu.field}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </td>
+                </tr>
             </table>
         </body>
         </html>

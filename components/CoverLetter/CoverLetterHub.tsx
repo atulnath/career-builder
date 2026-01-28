@@ -39,6 +39,7 @@ interface CoverLetterHubProps {
 const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) => {
     const [activeLetterId, setActiveLetterId] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
     // AI State removed
 
 
@@ -58,6 +59,8 @@ const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) =>
             company: 'Innovate AI GmbH',
             content: 'I am highly interested in the position as [Role] at [Company]. Given my background in [Your Key Skill] and my research experience at [University]...',
             lastModified: new Date().toISOString().split('T')[0],
+            language: cvData.language || 'en',
+            variant: 'modern'
         };
 
         setCVData((prev: CVData) => ({
@@ -108,9 +111,9 @@ const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) =>
                 </div>
             </div>
 
-            <div className="flex-1 grid grid-cols-1 lg:grid-cols-[400px_1fr_500px] gap-8 min-h-0">
+            <div className={`flex-1 grid grid-cols-1 ${isFocused ? 'lg:grid-cols-[0px_1fr_625px]' : 'lg:grid-cols-[400px_1fr_500px]'} gap-8 min-h-0 transition-all duration-500`}>
                 {/* Navigation & List */}
-                <div className="bg-slate-900/40 backdrop-blur-md border border-slate-800/50 rounded-[32px] p-6 flex flex-col min-h-0">
+                <div className={`bg-slate-900/40 backdrop-blur-md border border-slate-800/50 rounded-[32px] p-6 flex flex-col min-h-0 overflow-hidden transition-all duration-500 ${isFocused ? 'opacity-0 w-0 p-0 border-0' : 'opacity-100'}`}>
                     <div className="relative mb-6">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
                         <input
@@ -159,6 +162,44 @@ const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) =>
                         <div className="flex flex-col h-full animate-in fade-in slide-in-from-left-4 duration-300">
                             <div className="flex-1 overflow-y-auto custom-scrollbar p-8">
                                 <div className="space-y-8 animate-in fade-in duration-300">
+                                    {/* Configuration Bar */}
+                                    <div className="flex flex-wrap items-center gap-4 bg-slate-800/20 p-4 rounded-2xl border border-slate-700/30">
+                                        <div className="flex-1 min-w-[140px]">
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1 mb-2 block">Language</label>
+                                            <div className="flex bg-slate-900/50 p-1 rounded-xl border border-slate-700/50">
+                                                <button
+                                                    onClick={() => updateLetter(activeLetter.id, { language: 'en' })}
+                                                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-black tracking-widest transition-all ${activeLetter.language === 'en' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+                                                >
+                                                    ENGLISH
+                                                </button>
+                                                <button
+                                                    onClick={() => updateLetter(activeLetter.id, { language: 'de' })}
+                                                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-black tracking-widest transition-all ${activeLetter.language === 'de' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+                                                >
+                                                    GERMAN
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 min-w-[140px]">
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest pl-1 mb-2 block">Style</label>
+                                            <div className="flex bg-slate-900/50 p-1 rounded-xl border border-slate-700/50">
+                                                <button
+                                                    onClick={() => updateLetter(activeLetter.id, { variant: 'modern' })}
+                                                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-black tracking-widest transition-all ${activeLetter.variant !== 'classic' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+                                                >
+                                                    MODERN
+                                                </button>
+                                                <button
+                                                    onClick={() => updateLetter(activeLetter.id, { variant: 'classic' })}
+                                                    className={`flex-1 py-1.5 rounded-lg text-[10px] font-black tracking-widest transition-all ${activeLetter.variant === 'classic' ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+                                                >
+                                                    CLASSIC
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     {/* Essential Role & Company Container */}
                                     <div className="bg-slate-800/20 border border-slate-700/30 rounded-[32px] p-6 space-y-6">
                                         <div className="grid grid-cols-2 gap-6">
@@ -276,6 +317,8 @@ const CoverLetterHub: React.FC<CoverLetterHubProps> = ({ cvData, setCVData }) =>
                                         <textarea
                                             value={activeLetter.content}
                                             onChange={(e) => updateLetter(activeLetter.id, { content: e.target.value })}
+                                            onFocus={() => setIsFocused(true)}
+                                            onBlur={() => setIsFocused(false)}
                                             className="min-h-[500px] w-full bg-slate-800/20 border border-slate-700/30 rounded-[32px] p-8 text-slate-300 focus:outline-none focus:border-emerald-500/30 transition-all font-sans text-sm leading-relaxed resize-none custom-scrollbar"
                                             placeholder="Write your cover letter here..."
                                         />

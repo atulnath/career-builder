@@ -139,12 +139,14 @@ const InterviewPrep: React.FC<InterviewPrepProps> = ({ cvData, setCVData }) => {
                                 <input
                                     type="text"
                                     value={activeNote.title}
+                                    spellCheck={false}
                                     onChange={(e) => updateNote(activeNote.id, { title: e.target.value })}
                                     className="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl py-4 px-6 text-white font-black text-xl focus:outline-none focus:border-blue-500/50 transition-all"
                                     placeholder="Note Title"
                                 />
                                 <textarea
                                     value={activeNote.content}
+                                    spellCheck={false}
                                     rows={15}
                                     onChange={(e) => updateNote(activeNote.id, { content: e.target.value })}
                                     className="w-full bg-slate-800/50 border border-slate-700/50 rounded-3xl py-6 px-6 text-slate-300 focus:outline-none focus:border-blue-500/30 transition-all font-medium leading-relaxed resize-none custom-scrollbar"

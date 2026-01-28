@@ -42,7 +42,7 @@ export const FormSection = ({ title, icon, children, defaultOpen = true }: FormS
     );
 };
 
-export const InputField = ({ label, icon, ...props }: any) => (
+export const InputField = ({ label, icon, language = 'en', ...props }: any) => (
     <div className="space-y-2 group">
         <label className="text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2 px-1 transition-colors group-focus-within:text-blue-400">
             {icon && <span>{icon}</span>}
@@ -50,6 +50,8 @@ export const InputField = ({ label, icon, ...props }: any) => (
         </label>
         <div className="relative">
             <input
+                spellCheck={false}
+                lang={language}
                 {...props}
                 className="w-full px-5 py-4 bg-slate-900/40 border border-slate-700/50 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 transition-all shadow-inner font-medium text-sm"
             />
@@ -57,7 +59,7 @@ export const InputField = ({ label, icon, ...props }: any) => (
     </div>
 );
 
-export const TextAreaField = ({ label, icon, ...props }: any) => (
+export const TextAreaField = ({ label, icon, language = 'en', ...props }: any) => (
     <div className="space-y-2 group">
         <label className="text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2 px-1 transition-colors group-focus-within:text-blue-400">
             {icon && <span>{icon}</span>}
@@ -65,6 +67,8 @@ export const TextAreaField = ({ label, icon, ...props }: any) => (
         </label>
         <div className="relative">
             <textarea
+                spellCheck={false}
+                lang={language}
                 {...props}
                 className="w-full px-5 py-4 bg-slate-900/40 border border-slate-700/50 rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 transition-all resize-none shadow-inner font-medium text-sm min-h-[120px]"
             />

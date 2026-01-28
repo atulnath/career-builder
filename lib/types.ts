@@ -53,6 +53,8 @@ export interface CoverLetter {
     senderCity?: string;
     content: string;
     lastModified: string;
+    language?: 'en' | 'de';
+    variant?: 'modern' | 'classic';
 }
 
 

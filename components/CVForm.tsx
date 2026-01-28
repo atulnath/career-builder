@@ -103,12 +103,12 @@ export default function CVForm({ cvData, setCVData }: CVFormProps) {
                                 <button onClick={() => removeEducation(idx)} className="p-2.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"><Trash2 size={18} /></button>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <input type="text" placeholder={labels.placeholders.university} value={edu.university} onChange={(e) => updateEducation(idx, 'university', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
+                                <input type="text" placeholder={labels.placeholders.university} value={edu.university} onChange={(e) => updateEducation(idx, 'university', e.target.value)} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                                 <input type="text" placeholder={labels.placeholders.dates} value={edu.dates} onChange={(e) => updateEducation(idx, 'dates', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <input type="text" placeholder={labels.placeholders.degree} value={edu.degree} onChange={(e) => updateEducation(idx, 'degree', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
-                                <input type="text" placeholder="Specialization" value={edu.field} onChange={(e) => updateEducation(idx, 'field', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
+                                <input type="text" placeholder={labels.placeholders.degree} value={edu.degree} onChange={(e) => updateEducation(idx, 'degree', e.target.value)} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
+                                <input type="text" placeholder="Specialization" value={edu.field} onChange={(e) => updateEducation(idx, 'field', e.target.value)} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                                 <input type="text" placeholder={labels.placeholders.gpa} value={edu.gpa} onChange={(e) => updateEducation(idx, 'gpa', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                             </div>
                         </div>
@@ -126,8 +126,8 @@ export default function CVForm({ cvData, setCVData }: CVFormProps) {
                                 <span className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 font-black text-xs">{idx + 1}</span>
                                 <button onClick={() => removeSkill(idx)} className="p-2.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"><Trash2 size={18} /></button>
                             </div>
-                            <input type="text" placeholder={labels.placeholders.category} value={skill.category} onChange={(e) => updateSkill(idx, 'category', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all" />
-                            <textarea placeholder={labels.placeholders.skills} value={skill.items} onChange={(e) => updateSkill(idx, 'items', e.target.value)} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all min-h-[60px] resize-none" />
+                            <input type="text" placeholder={labels.placeholders.category} value={skill.category} onChange={(e) => updateSkill(idx, 'category', e.target.value)} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all" />
+                            <textarea placeholder={labels.placeholders.skills} value={skill.items} onChange={(e) => updateSkill(idx, 'items', e.target.value)} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all min-h-[60px] resize-none" />
                         </div>
                     ))}
                     <button onClick={addSkill} className="w-full flex items-center justify-center gap-3 text-emerald-400 hover:text-emerald-300 text-sm font-black py-5 border-2 border-dashed border-slate-700/50 rounded-[32px] hover:bg-emerald-500/5 hover:border-emerald-500/30 transition-all uppercase tracking-widest"><Plus size={20} /> Add Skill Category</button>
@@ -148,12 +148,12 @@ export default function CVForm({ cvData, setCVData }: CVFormProps) {
                                     const updated = [...cvData.languages];
                                     updated[idx].name = e.target.value;
                                     updateField('languages', updated);
-                                }} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
+                                }} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                                 <input type="text" placeholder="Proficiency" value={langItem.level} onChange={(e) => {
                                     const updated = [...cvData.languages];
                                     updated[idx].level = e.target.value;
                                     updateField('languages', updated);
-                                }} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
+                                }} spellCheck={false} className="w-full px-5 py-3.5 bg-slate-800/40 border border-slate-700/50 rounded-2xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all" />
                             </div>
                         </div>
                     ))}
