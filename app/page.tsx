@@ -48,116 +48,7 @@ import { generateCV_DOCX } from '@/lib/docxGenerator';
 
 import { CVData } from '@/lib/types';
 import { useCVData } from '@/hooks/useCVData';
-
-const INITIAL_DATA: CVData = {
-  fullName: 'Atul Chandra Nath',
-  language: 'de',
-  photoUrl: '',
-  address: 'Reichenhainer Str. 51, 09126 Chemnitz',
-  location: 'Deutschland',
-  phone: '+49177 6695401',
-  leetcode: 'https://leetcode.com/u/atul15/',
-  github: 'github.com/atulnath',
-  portfolio: 'atulnath.github.io',
-  email: 'atul.chand.nath@gmail.com',
-  dateOfBirth: '01/07/1993 in Chittagong, Bangladesh',
-  languages: [
-    { name: 'English', level: 'Fluent' },
-    { name: 'German', level: 'B1 Level' },
-    { name: 'Bengali', level: 'Mother Tongue' },
-  ],
-  activeProfileId: 'cv-engineer',
-  profiles: [
-    {
-      id: 'cv-engineer',
-      name: 'Computer Vision Engineer',
-      aboutMe: 'M.Sc. student specializing in Automotive Software Engineering with 3+ years of research and internship experience in Computer Vision. Proven expertise in real-time ALPR systems, YOLOv8 object detection, and sensor fusion. Seeking to leverage my background in deep learning and Python/C++ to develop cutting-edge perception systems for autonomous driving.',
-      skills: [
-        { category: 'Deep Learning', items: 'YOLOv8, CNNs, SORT, EasyOCR' },
-        { category: 'Vision Tools', items: 'OpenCV, NumPy, Pandas, Matplotlib' },
-        { category: 'Languages', items: 'C++, Python, CUDA' },
-        { category: 'Frameworks', items: 'PyTorch, TensorFlow (Basic)' },
-      ],
-    },
-    {
-      id: 'fullstack-dev',
-      name: 'Full Stack Developer',
-      aboutMe: 'Innovative Software Engineer with experience building robust web applications and real-time telemetry dashboards. Skilled in modern frameworks like Next.js, Vue.js, and backend technologies like Rust (Rocket) and Python (Flask). Focused on creating high-performance, user-centric solutions with clean, maintainable code.',
-      skills: [
-        { category: 'Web Frontend', items: 'React, Next.js, Vue.js, Tailwind CSS' },
-        { category: 'Backend/API', items: 'Rust (Rocket/Axum), Node.js, Python (FastAPI/Flask)' },
-        { category: 'Cloud/Database', items: 'PostgreSQL, Firebase, MySQL, Docker' },
-        { category: 'Core Logic', items: 'Java, TypeScript, C++' },
-      ],
-    },
-    {
-      id: 'embedded-uav',
-      name: 'Embedded Systems (UAV Focus)',
-      aboutMe: 'Specialized Embedded Software Developer focused on autonomous UAV navigation and precision landing systems. Experienced in RTK-GPS integration, Pixhawk flight controllers, and real-time telemetry. Combining M.Sc. level Automotive Engineering with hands-on systems integration for next-gen aerial robotics.',
-      skills: [
-        { category: 'Robotics', items: 'ROS2, Pixhawk/Mavlink, DroneKit, RTK-GPS' },
-        { category: 'Embedded', items: 'C++, Embedded C, Rust, ESP32, STM32' },
-        { category: 'Communication', items: 'CAN Bus, I2C, SPI, UART' },
-        { category: 'Analysis', items: 'MATLAB/Simulink, Python, MAVProxy' },
-      ],
-    }
-  ],
-  skills: [
-    { category: 'Deep Learning', items: 'YOLOv8, CNNs, SORT, EasyOCR' },
-    { category: 'Vision Tools', items: 'OpenCV, NumPy, Pandas, Matplotlib' },
-    { category: 'Languages', items: 'C++, Python, CUDA' },
-    { category: 'Frameworks', items: 'PyTorch, TensorFlow (Basic)' },
-  ],
-  aboutMe: 'M.Sc. student specializing in Automotive Software Engineering with 3+ years of research and internship experience in Computer Vision. Proven expertise in real-time ALPR systems, YOLOv8 object detection, and sensor fusion. Seeking to leverage my background in deep learning and Python/C++ to develop cutting-edge perception systems for autonomous driving.',
-  education: [
-    {
-      university: 'Technische Universität Chemnitz',
-      dates: '2018–Present',
-      degree: 'Master of Science (M.Sc.)',
-      field: 'Automotive Software Engineering',
-      gpa: '2.5',
-    },
-    {
-      university: 'University Of Science & Technology Chattogram',
-      dates: '2012–2018',
-      degree: 'Bachelor of Science (B.Sc.)',
-      field: 'Computer Science and Engineering (CSE)',
-      gpa: '1.9',
-    },
-  ],
-  experience: [
-    {
-      company: 'Technische Universität Chemnitz',
-      dates: '2025–Present',
-      position: 'Master\'s Thesis',
-      bullets: [
-        'Developing a GPS-based UAV precision landing system using RTK-GPS and Pixhawk to achieve centimeter-level accuracy as part of my Master\'s thesis.',
-        'Integrating embedded and full-stack components using Python, Rust (Rocket), and Vue.js for real-time drone telemetry and visualization.',
-      ],
-    },
-    {
-      company: 'Technische Universität Chemnitz',
-      dates: '2023–2024',
-      position: 'Computer Vision Intern',
-      bullets: [
-        'Developed a real-time German ALPR system using YOLOv8, SORT, and EasyOCR, achieving 95% detection accuracy on 4,000+ annotated images. Published at [IEEE ICSJ 2024 (Japan)](https://ieeexplore.ieee.org/document/example1) with 6 citations, demonstrating applicability for smart city traffic monitoring.',
-      ],
-    },
-    {
-      company: 'University of Science and Technology Chittagong',
-      dates: '2015–2016',
-      position: 'Lead Researcher & Developer',
-      bullets: [
-        'Developed a Bengali License Plate Recognition system using Python, OpenCV, and CNNs for real-world traffic scenarios. Authored an [IEEE-published peer-reviewed paper](https://ieeexplore.ieee.org/document/example2); currently receiving 59 citations.',
-      ],
-    },
-  ],
-  applications: [],
-  coverLetters: [],
-  interviewPrep: [],
-  bookmarks: [],
-  topSkills: ['Computer Vision', 'YOLOv8', 'Python', 'C++', 'Deep Learning', 'PyTorch'],
-};
+import { EMPTY_CV_DATA, isAdminUser } from '@/lib/defaultData';
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
@@ -179,12 +70,13 @@ export default function Home() {
     cvData,
     setCVData,
     saveStatus,
+    dataLoading,
     saveToCloud,
     switchProfile,
     addProfile,
     removeProfile,
     updateProfileName
-  } = useCVData(INITIAL_DATA, user?.uid || null);
+  } = useCVData(EMPTY_CV_DATA, user?.uid || null);
 
   const [currentView, setCurrentView] = useState<ViewType>('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -233,6 +125,15 @@ export default function Home() {
     return <LoginView />;
   }
 
+  if (dataLoading) {
+    return (
+      <div className="min-h-screen bg-[#020617] flex flex-col items-center justify-center gap-4">
+        <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+        <p className="text-slate-400 text-sm">Loading your data...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#020617] text-slate-200 selection:bg-blue-500/30 font-sans flex overflow-hidden">
       {/* Sidebar Navigation */}
@@ -263,6 +164,11 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:block">Logged in as {user.email?.split('@')[0]}</p>
+                {isAdminUser(user.email) && (
+                  <span className="ml-2 px-2 py-0.5 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-full text-[9px] font-black text-amber-400 uppercase tracking-widest hidden sm:block">
+                    Admin
+                  </span>
+                )}
               </div>
               <div className="w-px h-3 bg-slate-800 hidden sm:block"></div>
               <div className="flex items-center gap-2">

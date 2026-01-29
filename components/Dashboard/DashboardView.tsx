@@ -113,19 +113,19 @@ const DashboardView: React.FC<DashboardViewProps> = ({ cvData }) => {
                     </div>
 
                     <div className="mt-8 pt-8 border-t border-slate-800/50">
-                        <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Job Search Strategy</h4>
+                        <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Job Search Tips</h4>
                         <div className="space-y-4">
                             <div className="flex items-start gap-4">
                                 <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 font-bold shrink-0">1</div>
-                                <p className="text-sm text-slate-300 leading-relaxed">Focus on <span className="text-white font-bold">Automotive AI</span> and <span className="text-white font-bold">UAV Robotics</span> roles first.</p>
+                                <p className="text-sm text-slate-300 leading-relaxed">Tailor your <span className="text-white font-bold">CV profile</span> for each job application to highlight relevant skills.</p>
                             </div>
                             <div className="flex items-start gap-4">
                                 <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 font-bold shrink-0">2</div>
-                                <p className="text-sm text-slate-300 leading-relaxed">Utilize your <span className="text-white font-bold">59+ citations</span> and IEEE publications as key differentiators.</p>
+                                <p className="text-sm text-slate-300 leading-relaxed">Track all your <span className="text-white font-bold">applications</span> and follow up after 1-2 weeks if no response.</p>
                             </div>
                             <div className="flex items-start gap-4">
                                 <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 font-bold shrink-0">3</div>
-                                <p className="text-sm text-slate-300 leading-relaxed">Target companies in <span className="text-white font-bold">Germany</span> while leveraged your B1 Language level.</p>
+                                <p className="text-sm text-slate-300 leading-relaxed">Use <span className="text-white font-bold">bookmarks</span> to save interesting job postings for later review.</p>
                             </div>
                         </div>
                     </div>

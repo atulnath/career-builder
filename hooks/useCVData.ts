@@ -30,6 +30,7 @@ type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export const useCVData = (initialData: CVData, userId: string | null) => {
     const [cvData, setCVData] = useState<CVData>(initialData);
     const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+    const [dataLoading, setDataLoading] = useState<boolean>(true);
 
     // =========================================================================
     // FIREBASE DATA LOADING
@@ -41,57 +42,63 @@ export const useCVData = (initialData: CVData, userId: string | null) => {
      */
     useEffect(() => {
         const loadCVData = async () => {
-            if (!userId) return;
+            if (!userId) {
+                setDataLoading(false);
+                return;
+            }
 
-        try {
-          console.log(`[Firebase] Loading data for language: ${cvData.language}`);
-          const docRef = doc(db, 'users', userId, 'cvs', cvData.language);
-          const docSnap = await getDoc(docRef);
+            setDataLoading(true);
+            try {
+                console.log(`[Firebase] Loading data for language: ${cvData.language}`);
+                const docRef = doc(db, 'users', userId, 'cvs', cvData.language);
+                const docSnap = await getDoc(docRef);
 
-          if (docSnap.exists()) {
-              const data = docSnap.data() as CVData;
-            console.log(`[Firebase] Data loaded successfully`);
+                if (docSnap.exists()) {
+                    const data = docSnap.data() as CVData;
+                    console.log(`[Firebase] Data loaded successfully`);
 
-            setCVData(prev => {
-              // Merge loaded data with current state
-              const merged: CVData = {
-                  ...prev,
-                  ...data,
-                language: prev.language, // Keep current language
-                // Ensure arrays are never undefined
-                applications: data.applications || [],
-                coverLetters: data.coverLetters || [],
-                interviewPrep: data.interviewPrep || [],
-                bookmarks: data.bookmarks || [],
-                topSkills: data.topSkills || [],
-                experience: data.experience || [],
-                education: data.education || [],
-                skills: data.skills || [],
-                profiles: data.profiles || prev.profiles,
-            };
+                    setCVData(prev => {
+                        // Merge loaded data with current state
+                        const merged: CVData = {
+                            ...prev,
+                            ...data,
+                            language: prev.language, // Keep current language
+                            // Ensure arrays are never undefined
+                            applications: data.applications || [],
+                            coverLetters: data.coverLetters || [],
+                            interviewPrep: data.interviewPrep || [],
+                            bookmarks: data.bookmarks || [],
+                            topSkills: data.topSkills || [],
+                            experience: data.experience || [],
+                            education: data.education || [],
+                            skills: data.skills || [],
+                            profiles: data.profiles || prev.profiles,
+                        };
 
-              // Sync active profile data
-              const activeProfile = merged.profiles.find(
-                  (p: CVProfile) => p.id === merged.activeProfileId
-              ) || merged.profiles[0];
+                        // Sync active profile data
+                        const activeProfile = merged.profiles.find(
+                            (p: CVProfile) => p.id === merged.activeProfileId
+                        ) || merged.profiles[0];
 
-              if (activeProfile) {
-                  merged.aboutMe = activeProfile.aboutMe;
-                  merged.skills = activeProfile.skills;
-              }
+                        if (activeProfile) {
+                            merged.aboutMe = activeProfile.aboutMe;
+                            merged.skills = activeProfile.skills;
+                        }
 
-              return merged;
-          });
-        } else {
-              console.warn(`[Firebase] No document found for: ${cvData.language}`);
-          }
-      } catch (error) {
-          console.error('[Firebase] Error loading CV:', error);
-      }
-    };
+                        return merged;
+                    });
+                } else {
+                    console.warn(`[Firebase] No document found for: ${cvData.language}`);
+                }
+            } catch (error) {
+                console.error('[Firebase] Error loading CV:', error);
+            } finally {
+                setDataLoading(false);
+            }
+        };
 
-      loadCVData();
-  }, [cvData.language, userId]);
+        loadCVData();
+    }, [cvData.language, userId]);
 
     // =========================================================================
     // PROFILE DATA SYNCHRONIZATION
@@ -261,6 +268,7 @@ export const useCVData = (initialData: CVData, userId: string | null) => {
       cvData,
       setCVData,
       saveStatus,
+        dataLoading,
 
       // Firebase operations
       saveToCloud,
