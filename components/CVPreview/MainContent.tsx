@@ -43,7 +43,7 @@ const renderWithLinks = (text: string) => {
 export const PreviewMain: React.FC<{ cvData: CVData; labels: any }> = ({ cvData, labels }) => (
     <div className="p-10 space-y-12 bg-white">
         {cvData.aboutMe && (
-            <section>
+            <section id="preview-about">
                 <h2 className="text-[14px] font-black text-[#2c3e50] uppercase tracking-[0.25em] mb-4 flex items-center">
                     <span className="w-8 h-[2px] bg-[#2c3e50] mr-4"></span>
                     {labels.sections.about}
@@ -55,7 +55,7 @@ export const PreviewMain: React.FC<{ cvData: CVData; labels: any }> = ({ cvData,
             </section>
         )}
 
-        <section>
+        <section id="preview-experience">
             <h2 className="text-[14px] font-black text-[#2c3e50] uppercase tracking-[0.25em] mb-8 flex items-center">
                 <span className="w-8 h-[2px] bg-[#2c3e50] mr-4"></span>
                 {labels.sections.experience}
@@ -82,7 +82,7 @@ export const PreviewMain: React.FC<{ cvData: CVData; labels: any }> = ({ cvData,
             </div>
         </section>
 
-        <section>
+        <section id="preview-education">
             <h2 className="text-[14px] font-black text-[#2c3e50] uppercase tracking-[0.25em] mb-8 flex items-center">
                 <span className="w-8 h-[2px] bg-[#2c3e50] mr-4"></span>
                 {labels.sections.education}

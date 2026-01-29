@@ -1,3 +1,16 @@
+/**
+ * CVPreview Component
+ * 
+ * Real-time A4 CV preview that matches the PDF output.
+ * Uses A4 dimensions (210mm × 297mm) with a two-column layout:
+ * - Left sidebar: contact info, skills, languages
+ * - Main content: summary, experience, education
+ * 
+ * Includes section IDs for auto-scroll synchronization with CVForm.
+ * 
+ * @module components/CVPreview
+ */
+
 'use client';
 
 import React from 'react';

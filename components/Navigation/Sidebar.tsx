@@ -12,10 +12,11 @@ import {
     BarChart3,
     ChevronLeft,
     ChevronRight,
-    LogOut
+    LogOut,
+    Bookmark
 } from 'lucide-react';
 
-export type ViewType = 'dashboard' | 'cv-builder' | 'applications' | 'cover-letters' | 'interview-prep';
+export type ViewType = 'dashboard' | 'cv-builder' | 'applications' | 'cover-letters' | 'interview-prep' | 'bookmarks';
 
 interface SidebarProps {
     currentView: ViewType;
@@ -32,6 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, isCollapsed, on
         { id: 'applications', label: 'Applications', icon: Briefcase },
         { id: 'cover-letters', label: 'Cover Letters', icon: Mail },
         { id: 'interview-prep', label: 'Interview Prep', icon: MessageSquare },
+        { id: 'bookmarks', label: 'Bookmarks', icon: Bookmark },
     ];
 
     return (

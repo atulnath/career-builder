@@ -1,3 +1,19 @@
+/**
+ * CVForm Component
+ * 
+ * Main form for editing CV content. Organized into collapsible sections:
+ * - Personal Information (name, contact, photo)
+ * - Professional Summary (about me)
+ * - Work Experience (with bullet points)
+ * - Education (degrees, universities)
+ * - Skills (categorized)
+ * - Languages (proficiency levels)
+ * 
+ * Supports auto-scroll sync with preview via onSectionOpen callback.
+ * 
+ * @module components/CVForm
+ */
+
 'use client';
 
 import React, { useCallback } from 'react';
@@ -18,9 +34,10 @@ import { ExperienceSection } from './CVForm/ExperienceSection';
 interface CVFormProps {
     cvData: CVData;
     setCVData: React.Dispatch<React.SetStateAction<CVData>>;
+    onSectionOpen?: (sectionId: string) => void;
 }
 
-export default function CVForm({ cvData, setCVData }: CVFormProps) {
+export default function CVForm({ cvData, setCVData, onSectionOpen }: CVFormProps) {
     const lang = cvData.language || 'en';
     const labels = LABELS[lang];
 
@@ -78,7 +95,7 @@ export default function CVForm({ cvData, setCVData }: CVFormProps) {
             <PersonalSection cvData={cvData} updateField={updateField} labels={labels} />
 
             {/* 2. Professional Summary */}
-            <FormSection title={labels.sections.about} icon={<FileText size={22} />} defaultOpen={false}>
+            <FormSection title={labels.sections.about} icon={<FileText size={22} />} defaultOpen={false} sectionId="about" onOpen={onSectionOpen}>
                 <div className="pt-4">
                     <TextAreaField
                         label={labels.sections.about}
@@ -93,7 +110,7 @@ export default function CVForm({ cvData, setCVData }: CVFormProps) {
             <ExperienceSection cvData={cvData} setCVData={setCVData} labels={labels} />
 
             {/* 4. Education */}
-            <FormSection title={labels.sections.education} icon={<GraduationCap size={22} />} defaultOpen={false}>
+            <FormSection title={labels.sections.education} icon={<GraduationCap size={22} />} defaultOpen={false} sectionId="education" onOpen={onSectionOpen}>
                 <div className="pt-4 space-y-6">
                     {cvData.education?.map((edu, idx) => (
                         <div key={idx} className="bg-slate-900/50 rounded-[32px] p-6 border border-slate-700/50 space-y-5 relative group/edu shadow-2xl">
@@ -118,7 +135,7 @@ export default function CVForm({ cvData, setCVData }: CVFormProps) {
             </FormSection>
 
             {/* 5. Skills */}
-            <FormSection title={labels.sections.skills} icon={<Wrench size={22} />} defaultOpen={false}>
+            <FormSection title={labels.sections.skills} icon={<Wrench size={22} />} defaultOpen={false} sectionId="skills" onOpen={onSectionOpen}>
                 <div className="pt-4 space-y-6">
                     {cvData.skills?.map((skill, idx) => (
                         <div key={idx} className="bg-slate-900/50 rounded-[32px] p-6 border border-slate-700/50 space-y-4 shadow-2xl">
@@ -135,7 +152,7 @@ export default function CVForm({ cvData, setCVData }: CVFormProps) {
             </FormSection>
 
             {/* 6. Languages */}
-            <FormSection title={labels.sections.languages} icon={<Languages size={22} />} defaultOpen={false}>
+            <FormSection title={labels.sections.languages} icon={<Languages size={22} />} defaultOpen={false} sectionId="languages" onOpen={onSectionOpen}>
                 <div className="pt-4 space-y-6">
                     {cvData.languages?.map((langItem, idx) => (
                         <div key={idx} className="bg-slate-900/50 rounded-[32px] p-6 border border-slate-700/50 space-y-4 shadow-2xl">

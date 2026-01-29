@@ -8,15 +8,25 @@ interface FormSectionProps {
     icon: React.ReactNode;
     children: React.ReactNode;
     defaultOpen?: boolean;
+    sectionId?: string;
+    onOpen?: (sectionId: string) => void;
 }
 
-export const FormSection = ({ title, icon, children, defaultOpen = true }: FormSectionProps) => {
+export const FormSection = ({ title, icon, children, defaultOpen = true, sectionId, onOpen }: FormSectionProps) => {
     const [isOpen, setIsOpen] = useState(defaultOpen);
+
+    const handleToggle = () => {
+        const newState = !isOpen;
+        setIsOpen(newState);
+        if (newState && sectionId && onOpen) {
+            onOpen(sectionId);
+        }
+    };
 
     return (
         <div className={`transition-all duration-300 ${isOpen ? 'bg-slate-800/40' : 'bg-slate-800/10'} backdrop-blur-md rounded-3xl border border-slate-700/50 overflow-hidden shadow-lg`}>
             <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={handleToggle}
                 className="w-full flex items-center justify-between p-5 hover:bg-slate-700/30 transition-all group"
                 aria-expanded={isOpen}
             >

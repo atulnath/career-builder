@@ -48,7 +48,7 @@ const LeetcodeIcon = () => (
 
 export const PreviewSidebar: React.FC<{ cvData: CVData; labels: any }> = ({ cvData, labels }) => (
     <div className="bg-[#f8fafc] p-8 space-y-12 border-r border-slate-200">
-        <section>
+        <section id="preview-personal">
             <h2 className="text-[11px] font-black text-[#2c3e50] uppercase tracking-[0.2em] mb-6 border-b-2 border-[#2c3e50] pb-1 inline-block">
                 {labels.personal.title}
             </h2>
@@ -117,7 +117,7 @@ export const PreviewSidebar: React.FC<{ cvData: CVData; labels: any }> = ({ cvDa
             </div>
         </section>
 
-        <section>
+        <section id="preview-skills">
             <h2 className="text-[11px] font-black text-[#2c3e50] uppercase tracking-[0.2em] mb-6 border-b-2 border-[#2c3e50] pb-1 inline-block">
                 {labels.sections.skills}
             </h2>
@@ -131,7 +131,7 @@ export const PreviewSidebar: React.FC<{ cvData: CVData; labels: any }> = ({ cvDa
             </div>
         </section>
 
-        <section>
+        <section id="preview-languages">
             <h2 className="text-[11px] font-black text-[#2c3e50] uppercase tracking-[0.2em] mb-6 border-b-2 border-[#2c3e50] pb-1 inline-block">
                 {labels.sections.languages}
             </h2>

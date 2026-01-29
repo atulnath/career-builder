@@ -1,3 +1,17 @@
+/**
+ * PDF Generator
+ * 
+ * Generates a professional A4 CV as a downloadable PDF file using jsPDF.
+ * Features:
+ * - Two-column layout with sidebar for contact/skills
+ * - Custom color scheme matching the preview
+ * - Rounded profile photo rendering
+ * - Multi-page support for long CVs
+ * - Localized labels (EN/DE)
+ * 
+ * @module lib/pdfGenerator
+ */
+
 import { jsPDF } from 'jspdf';
 import { LABELS } from './constants';
 import { CVData, CVProfile, Experience, Education, Skill, Language } from './types';

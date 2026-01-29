@@ -1,3 +1,20 @@
+/**
+ * Firebase Configuration
+ * 
+ * Initializes Firebase services for the Career Hub application.
+ * Uses SSR-safe singleton pattern to prevent multiple initializations.
+ * 
+ * Services:
+ * - Authentication (Email/Password)
+ * - Firestore (User data storage)
+ * - Storage (Profile photos)
+ * 
+ * Data Structure:
+ * - users/{userId}/cvs/{language} - CV data per language
+ * 
+ * @module lib/firebase
+ */
+
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";

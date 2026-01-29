@@ -1,3 +1,21 @@
+/**
+ * DOCX Generator
+ * 
+ * Generates CV and Cover Letter documents as .doc files.
+ * Uses HTML-to-Word approach for maximum compatibility.
+ * 
+ * Includes:
+ * - generateCV_DOCX: Creates a professional CV document
+ * - generateLetter_DOCX: Creates a cover letter document
+ * 
+ * Features:
+ * - Two-column CV layout matching the PDF output
+ * - DIN 5008 compliant German business letter format
+ * - Localized labels (EN/DE)
+ * 
+ * @module lib/docxGenerator
+ */
+
 import { CVData } from './types';
 
 export const generateCV_DOCX = (cvData: CVData) => {
